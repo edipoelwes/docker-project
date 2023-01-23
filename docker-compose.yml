@@ -1,0 +1,37 @@
+version: '3'
+services:
+
+  #PHP Service
+  app:
+    image: edipoelwes/php-7.4
+    container_name: "${APP_CONTAINER_NAME}"
+    restart: always
+    tty: true
+    environment:
+      SERVICE_NAME: "${APP_SERVICE_NAME}"
+      SERVICE_TAGS: dev
+    working_dir: "${APP_WORKING_DIR}"
+    volumes:
+      - ./:/var/www
+      # - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - ${NETWORK}
+    
+  webserver:
+    image: nginx:alpine
+    container_name: "${WEBSERVER_CONTAINER_NAME}"
+    restart: always
+    tty: true
+    ports:
+      - "${PORT}:80"
+     # - "443:443"
+    volumes:
+      - ./:/var/www
+      - ./:/etc/nginx/conf.d/
+    networks:
+      - ${NETWORK}
+
+#Docker Networks
+networks:
+  siafc:
+    driver: bridge
