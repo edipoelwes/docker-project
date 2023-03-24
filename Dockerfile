@@ -43,6 +43,8 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install soap \
     && docker-php-ext-install sockets
 
+# RUN apt-get install xdebug
+# COPY xdebug.ini /usr/local/etc/php/conf.d/
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -59,4 +61,4 @@ COPY . /var/www
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
-CMD ["php-fpm"]
+CMD ["php-fpm", "-F"]
