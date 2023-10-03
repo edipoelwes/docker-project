@@ -1,8 +1,8 @@
 DOCKER_COMPOSE=docker compose
 DOCKER=docker
 
-SIAFC=/var/www/siafc
-NFSE=/var/www/nfse
+SIAFC=/var/www/projects/siafc
+CENTRAL=/var/www/projects/portal_contribuintes
 
 ps:
 	$(DOCKER_COMPOSE) ps
@@ -19,12 +19,10 @@ mysql:
 bash:
 	$(DOCKER_COMPOSE) exec app bash
 
-siafc:
-	$(DOCKER_COMPOSE) exec -w $(SIAFC) app bash
-app_siafc:
-	$(DOCKER_COMPOSE) exec -w $(SIAFC) app $(c)
+# app:
+# 	$(DOCKER_COMPOSE) exec -w $(SIAFC) app $(c)
 
-nfse:
-	$(DOCKER_COMPOSE) exec -w $(NFSE) app bash
-app_nfse:
-	$(DOCKER_COMPOSE) exec -w $(NFSE) app $(c)
+# siafc:
+# 	$(DOCKER_COMPOSE) exec -w $(SIAFC) app bash
+# central:
+# 	$(DOCKER_COMPOSE) exec -w $(CENTRAL) app bash

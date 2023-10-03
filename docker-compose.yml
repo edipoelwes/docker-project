@@ -8,7 +8,7 @@ services:
       dockerfile: Dockerfile
     image: php
     # image: edipoelwes/php-7.4
-    container_name: "${APP_CONTAINER_NAME}"
+    container_name: "app"
     restart: always
     tty: true
     environment:
@@ -21,35 +21,54 @@ services:
     networks:
       - ${NETWORK}
     
-  webserver:
+  siafc:
     image: nginx:alpine
-    container_name: "${WEBSERVER_CONTAINER_NAME}"
+    container_name: "siafc"
     restart: always
     tty: true
     ports:
-      - "${WEBSERVER_PORT}:80"
+      - "82:80"
      # - "443:443"
     volumes:
       - ./:/var/www
-      - ./:/etc/nginx/conf.d/
+      - ./config/siafc:/etc/nginx/conf.d/
     networks:
       - ${NETWORK}
 
-  # s3:
-  #   image: minio/minio:latest
+  # centralcontribuinte:
+  #   image: nginx:alpine
+  #   container_name: "central_do_contribuinte"
+  #   restart: always
+  #   tty: true
   #   ports:
-  #     - "9000:9000"
-  #     - "9099:9099"
-  #   environment:
-  #     MINIO_ROOT_USER: minioadmin
-  #     MINIO_ROOT_PASSWORD: minioadmin
+  #     - "83:80"
+  #    # - "443:443"
   #   volumes:
-  #     - ./storage-minio:/data
-  #   command: server --address ":9099" --console-address ":9000" /data
-  #   restart: always # necessary since it's failing to start sometimes
+  #     - ./:/var/www
+  #     - ./config/centraldocontribuinte:/etc/nginx/conf.d/
   #   networks:
   #     - ${NETWORK}
-
+  
+  db_postgres:
+    image: postgres:13
+    container_name: postgres
+    restart: always
+    tty: true
+    working_dir: /var/lib/postgresql
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: jaicos
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      # - /Users/edipoelwes/Documents/sts/siafc/db:/var/lib/postgresql
+      - ./db:/var/lib/postgresql/data
+      - ./dump:/var/lib/postgresql/dump
+      # - ./dump:/docker-entrypoint-initdb.d
+    networks:
+      - ${NETWORK}
 
 #Docker Networks
 networks:

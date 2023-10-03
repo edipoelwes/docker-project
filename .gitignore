@@ -4,3 +4,6 @@ docs
 siafc
 arquivoDeRetorno
 storage-minio
+backup/*
+db/*
+projects
